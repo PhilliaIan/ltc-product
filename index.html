@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>长期护理保险动态复核系统 · 产品原型展示</title>
+<style>
+  :root{
+    --navy:#2E4C78;
+    --navy-strong:#223C61;
+    --navy-tint:#eef3fa;
+    --navy-tint-2:#e2ebf5;
+    --red:#C26A55;
+    --ink:#2b323d;
+    --muted:#626d7c;
+    --line:#e4e8ee;
+    --soft:#f6f8fb;
+    --white:#ffffff;
+    --radius:14px;
+    --shadow:0 8px 24px rgba(34,60,97,.07);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    font-size:16px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* 顶部导航 */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:62px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--navy-strong);font-size:16px;}
+  .brand .mark{width:22px;height:22px;border-radius:6px;background:var(--navy);position:relative;}
+  .brand .mark::after{content:"";position:absolute;left:6px;top:6px;width:10px;height:10px;border:2px solid #fff;border-radius:2px;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:var(--muted);font-size:15px;padding:8px 0;}
+  .nav-links a:hover{color:var(--navy);}
+
+  /* Hero（浅色） */
+  .hero{background:linear-gradient(170deg,#f8fbfd 0%,var(--navy-tint) 100%);padding:84px 0 72px;}
+  .hero .tag{display:inline-block;font-size:14px;letter-spacing:.12em;color:var(--navy);background:#fff;border:1px solid var(--navy-tint-2);padding:6px 14px;border-radius:999px;margin-bottom:26px;}
+  .hero h1{font-size:clamp(30px,5vw,45px);line-height:1.25;color:var(--navy-strong);margin:0 0 20px;font-weight:800;letter-spacing:.01em;}
+  .hero .lead{font-size:clamp(18px,2.4vw,22px);color:var(--navy);margin:0 0 18px;font-weight:700;}
+  .hero p.desc{font-size:16.5px;color:var(--muted);max-width:780px;margin:0 0 34px;}
+  .hero .desc .red{color:var(--red);font-weight:700;}
+  .cta{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn-primary{background:var(--red);color:#fff;}
+  .btn-primary:hover{background:#AE5844;}
+  .btn-outline{background:#fff;color:var(--navy);border:1.5px solid var(--navy-tint-2);}
+  .btn-outline:hover{border-color:var(--navy);}
+
+  /* 通用区块 */
+  section.block{padding:76px 0;}
+  section.block.soft{background:var(--soft);}
+  .sec-head{margin-bottom:42px;max-width:840px;}
+  .sec-head h2{font-size:clamp(24px,3.4vw,30px);color:var(--navy-strong);margin:0 0 16px;font-weight:800;}
+  .sec-head .kicker{display:inline-block;font-size:14px;font-weight:700;color:var(--navy);background:var(--navy-tint);padding:4px 12px;border-radius:999px;margin-bottom:16px;}
+  .sec-head p{font-size:17px;color:var(--muted);margin:0;}
+  .sec-head p strong{color:var(--ink);}
+
+  /* 产品优势 */
+  .adv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .adv{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;box-shadow:var(--shadow);}
+  .adv .a-title{font-size:18px;font-weight:800;color:var(--navy-strong);margin-bottom:12px;}
+  .adv .a-title .red{color:var(--red);}
+  .adv p{font-size:15.5px;color:var(--muted);margin:0;line-height:1.75;}
+
+  /* 卡片 */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;box-shadow:var(--shadow);}
+  .card .idx{width:38px;height:38px;border-radius:10px;background:var(--navy-tint);color:var(--navy-strong);font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+  .card h3{font-size:19px;color:var(--navy-strong);margin:0 0 12px;font-weight:700;}
+  .card p{font-size:15.5px;color:var(--muted);margin:0;line-height:1.75;}
+
+  /* 三层结构 */
+  .layers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .layer{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;}
+  .layer .lname{font-size:17px;font-weight:800;color:var(--navy-strong);margin-bottom:12px;display:flex;align-items:center;gap:9px;}
+  .layer .lname .dot{width:10px;height:10px;border-radius:50%;background:var(--navy);}
+  .layer .in{font-size:14.5px;color:var(--navy);background:var(--navy-tint);border-radius:8px;padding:8px 12px;margin-bottom:14px;}
+  .layer .out{font-size:15px;color:var(--muted);line-height:1.75;}
+  .layer-note{margin-top:22px;font-size:15.5px;color:var(--muted);background:var(--navy-tint);border-radius:12px;padding:18px 22px;}
+
+  /* 两级触发 */
+  .triggers{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px;}
+  .trig{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;}
+  .trig.t2{border-color:#e6c5be;}
+  .trig .level{display:inline-block;font-size:14px;font-weight:800;padding:4px 12px;border-radius:999px;margin-bottom:14px;}
+  .trig.t1 .level{background:var(--navy-tint);color:var(--navy);}
+  .trig.t2 .level{background:#f3e1dd;color:var(--red);}
+  .trig h3{font-size:19px;margin:0 0 14px;color:var(--navy-strong);}
+  .trig dl{margin:0;}
+  .trig dt{font-size:14px;font-weight:800;color:var(--navy);margin:12px 0 4px;}
+  .trig dd{margin:0;font-size:15px;color:var(--muted);line-height:1.7;}
+  .trig dd .red{color:var(--red);font-weight:700;}
+
+  /* 分工边界（浅色卡，替代原深色横幅） */
+  .boundary-line{margin-top:26px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:var(--radius);padding:24px 28px;}
+  .boundary-line h4{margin:0 0 12px;font-size:16.5px;color:var(--navy-strong);}
+  .boundary-line ul{margin:0;padding-left:0;list-style:none;}
+  .boundary-line li{position:relative;padding-left:24px;font-size:15.5px;color:var(--ink);line-height:1.9;}
+  .boundary-line li::before{content:"";position:absolute;left:4px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--navy);}
+  .boundary-line li .red{color:var(--red);font-weight:700;}
+
+  /* 界面导览 */
+  .module{margin-bottom:58px;}
+  .module:last-child{margin-bottom:0;}
+  .module h3{font-size:21px;color:var(--navy-strong);margin:0 0 12px;font-weight:800;}
+  .module .m-desc{font-size:16px;color:var(--muted);margin:0 0 24px;max-width:880px;}
+  .shot-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .shot{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+  .shot .shot-title{padding:16px 20px 0;font-size:15.5px;font-weight:700;color:var(--ink);}
+  .shot img{width:100%;padding:16px 20px 20px;}
+
+  /* 运行方式 */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:30px;}
+  .step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 18px;}
+  .step .n{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+  .step .t{font-size:15px;color:var(--ink);line-height:1.6;}
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .mode{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;}
+  .mode h4{margin:0 0 10px;font-size:17px;color:var(--navy-strong);}
+  .mode p{margin:0;font-size:15.5px;color:var(--muted);}
+  .cases{margin-top:30px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .case{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 22px;}
+  .case .cid{font-weight:800;color:var(--navy-strong);margin-bottom:4px;}
+  .case .cp{font-size:15px;color:var(--muted);}
+
+  /* 数据与边界 */
+  .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px 26px;}
+  .bitem{display:flex;gap:14px;align-items:flex-start;}
+  .bitem .tick{flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:var(--navy-tint);color:var(--navy);font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:3px;}
+  .bitem p{margin:0;font-size:15.5px;color:var(--ink);line-height:1.7;}
+
+  /* 页脚（浅色） */
+  footer{background:var(--navy-tint);color:var(--muted);padding:42px 0;border-top:1px solid var(--line);}
+  footer .fname{color:var(--navy-strong);font-size:17px;font-weight:700;margin-bottom:8px;}
+  footer p{margin:0;font-size:14.5px;}
+
+  .offline-banner{display:none;position:fixed;left:0;right:0;bottom:0;background:var(--red);color:#fff;text-align:center;padding:12px 16px;font-size:15px;z-index:80;}
+  body.offline .offline-banner{display:block;}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.show{opacity:1;transform:none;}
+
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .adv-grid,.cards,.layers,.triggers,.shot-grid,.modes,.cases,.bgrid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr 1fr;}
+    section.block{padding:58px 0;}
+    .hero{padding:62px 0 54px;}
+  }
+  @media (max-width:480px){
+    .steps{grid-template-columns:1fr;}
+    .wrap{padding:0 18px;}
+    .btn{width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand"><span class="mark"></span>长期护理保险动态复核系统</div>
+    <nav class="nav-links">
+      <a href="#what">系统定位</a>
+      <a href="#how">运作机制</a>
+      <a href="#screens">界面导览</a>
+      <a href="#run">运行方式</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 首屏 -->
+<div class="hero">
+  <div class="wrap">
+    <span class="tag">产品原型展示</span>
+    <h1>长期护理保险动态复核系统</h1>
+    <p class="lead">把失能待遇资格从一次认定，变成一段持续观察。</p>
+    <p class="desc">系统以中国健康与养老追踪调查（CHARLS）数据为基础，面向长护险待遇资格的动态管理，回答三件事：<span class="red">复核谁先谁后、两次现场评估之间如何观测、如何防止错报与瞒报</span>。它不替代现场评估，而是把两次评估之间的状态变化连续记录下来。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#screens">查看产品实机样例</a>
+      <a class="btn btn-outline" href="#how">了解运作机制</a>
+    </div>
+  </div>
+</div>
+
+<!-- 产品优势 -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">产品优势</span>
+      <h2>这套系统带来的三项实际改善</h2>
+      <p>下面三项结论均来自交付包内的测算报告，数字按报告口径标注，仿真假设与真实发生率在数据与边界部分说明。</p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv reveal">
+        <div class="a-title">检出时滞缩短 <span class="red">45%–50%</span></div>
+        <p>月度对话问询把状态退回的检出时滞缩短约45%至50%，状态变化不必等到下一次年度现场评估才被发现。</p>
+      </div>
+      <div class="adv reveal">
+        <div class="a-title">单人次月成本 <span class="red">0.001–0.008元</span></div>
+        <p>单人次月度对话的算力成本约0.001至0.008元，高频观测的边际成本很低，具体量级以测算报告口径为准。</p>
+      </div>
+      <div class="adv reveal">
+        <div class="a-title">现场评估次数 <span class="red">不增加</span></div>
+        <p>高频观测只更新状态后验，现场评估仅在触发判据满足时安排，不会把所有人都推去上门评估。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 这是一个怎样的系统 -->
+<section class="block soft" id="what">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>这是一个怎样的系统</h2>
+      <p>失能状态会随时间<strong>双向变化</strong>，而现行待遇资格管理以低频现场评估和定期复核为主，两次评估之间的状态变化难以被看见。这是一套以 CHARLS 数据为基础、面向长护险待遇资格动态管理的监测与复核支持系统，在不替代行政裁量的前提下，把监测、取证与复核排序组织成一套可在本地运行的流程。</p>
+    </div>
+    <div class="cards">
+      <div class="card reveal">
+        <div class="idx">1</div>
+        <h3>复核排序，谁先谁后</h3>
+        <p>以失能依赖项数识别状态退回风险更高的人群，形成复核排序与差异化周期。依赖项少、退回更快的人排在前面优先复核，而不是按年龄或等级平均安排。</p>
+      </div>
+      <div class="card reveal">
+        <div class="idx">2</div>
+        <h3>月度观测，评估之间</h3>
+        <p>以对话式月度问询作为高频观测，按月更新状态后验，把一年一次的现场评估变成每月一次的观察，恢复与退回的过程都能被连续记录。</p>
+      </div>
+      <div class="card reveal">
+        <div class="idx">3</div>
+        <h3>雷达防伪，识别矛盾</h3>
+        <p>以毫米波雷达被动监测作为非合作信号，对照申报内容与实际行为，发现两者不一致的地方，形成防伪与威慑。雷达只标出需要进一步核实的对象，不直接判断等级。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 系统如何运作 -->
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>系统如何运作</h2>
+      <p>系统按<strong>事件、观测、结论三层</strong>组织。下面逐层说明每一层处理什么信息、为什么这样安排，以及一条信号从产生到最终处理会经过哪些步骤。</p>
+    </div>
+
+    <div class="layers">
+      <div class="layer reveal">
+        <div class="lname"><span class="dot"></span>事件层 · 客观记录，不作判断</div>
+        <div class="in">输入：毫米波雷达持续采集的信号</div>
+        <div class="out">这一层不回答“这个人是不是失能”，只把观察到的具体动作转成带时间的事件记录，例如凌晨离床、检测到跌倒、设备离线、出现监测盲区。单条信号可能是误报或偶然动作，所以事件层只做客观记录，不据此下结论。</div>
+      </div>
+      <div class="layer reveal">
+        <div class="lname"><span class="dot"></span>观测层 · 按月更新状态</div>
+        <div class="in">输入：月度对话问询与雷达事件</div>
+        <div class="out">对话问询把老人对六项日常活动的回答转成结构化取值，是状态判断的主要依据；雷达事件作为旁证调整可信度。系统把两类信息合并，逐月更新这个人处于各失能状态的概率，并生成需要进一步处理的触发队列。雷达事件只调整可信度，不单独决定结果，也不直接写入状态后验。</div>
+      </div>
+      <div class="layer reveal">
+        <div class="lname"><span class="dot"></span>结论层 · 由评估机构裁定</div>
+        <div class="in">输入：观测层证据与触发队列</div>
+        <div class="out">系统本身不产生待遇等级。当判据提示需要现场评估时，由评估机构上门完成评估，等级是否调整、如何调整，都由经办机构根据评估结果按既有程序裁定，传感器和算法不进入这一层。</div>
+      </div>
+    </div>
+    <div class="layer-note reveal">雷达只停在事件层，是因为它对长护险十七项只能直接测量三项、间接推断四项，覆盖并不完整，而且报警级事件的精确率有限；若由它直接调整等级，会出现不少错误调整。</div>
+
+    <div class="triggers">
+      <div class="trig t1 reveal">
+        <span class="level">一级触发</span>
+        <h3>先取证，不改等级</h3>
+        <dl>
+          <dt>进入条件</dt>
+          <dd>出现任意一条雷达事件、设备离线，或监测出现盲区。</dd>
+          <dt>为什么先取证</dt>
+          <dd>这些信号只说明有情况需要问清楚。雷达报警可能是误报，设备离线可能是断电或被遮挡，单凭一条信号无法判断真实状态。</dd>
+          <dt>具体动作</dt>
+          <dd>安排一次对话问询，把信号对应的情况问清楚并记录。这一步<span class="red">不改变待遇等级，也不改变状态后验</span>，只是补充证据。</dd>
+        </dl>
+      </div>
+      <div class="trig t2 reveal">
+        <span class="level">二级触发</span>
+        <h3>再评估，才可能改等级</h3>
+        <dl>
+          <dt>进入条件（满足其一）</dt>
+          <dd>同一类申报与行为矛盾近三个月内出现两次；跌破门槛的概率达到或超过0.5；连续未达门槛的次数达到设定值。</dd>
+          <dt>为什么需要现场评估</dt>
+          <dd>这些条件说明矛盾不是偶然一次，或者月度后验已经持续指向状态变化，低成本的对话取证已不足以确认，需要动用成本最高的现场评估。</dd>
+          <dt>具体动作</dt>
+          <dd>安排现场评估，由评估机构上门；<span class="red">只有现场评估完成后，等级才可能被调整</span>。</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="boundary-line reveal">
+      <h4>分工边界</h4>
+      <ul>
+        <li>对话端用于收集回答和取证，不显示等级结论，也不给出触发建议。</li>
+        <li>雷达事件只进入触发队列，不进入状态后验，不直接改变待遇等级。</li>
+        <li>待遇等级最终由经办机构按现场评估程序裁定，<span class="red">系统不替代行政裁量</span>。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 界面导览 -->
+<section class="block soft" id="screens">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>界面导览</h2>
+      <p>原型包含四个页面，下面按<strong>对话端、工作台、批量结果</strong>三个模块展示真实界面，所有截图均来自本地运行的原型。</p>
+    </div>
+
+    <div class="module reveal">
+      <h3>月度问询对话端 · 采集与取证</h3>
+      <p class="m-desc">按当月随机顺序询问六项日常活动，把自由表述对应到四档取值并标注逐字证据；主问之外另起复问，抽取两项再问一次。这一页只记录、只取证，不显示等级结论。</p>
+      <div class="shot-grid">
+        <div class="shot">
+          <div class="shot-title">实时回读面板与复问比对</div>
+          <img src="assets/readback.png" alt="实时回读面板：六项取值、位置校验6/6与复问比对" loading="lazy">
+        </div>
+        <div class="shot">
+          <div class="shot-title">复问改口，报出差档</div>
+          <img src="assets/inconsistency.png" alt="复问比对中改口的一项被黄色差档框标出" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="module reveal">
+      <h3>复核员工作台 · 排序与触发</h3>
+      <p class="m-desc">待遇人员名单按依赖项数排序，两级触发队列区分对话取证与现场评估；单人详情给出随月更新的状态后验曲线、本月结构化取值与雷达事件流。</p>
+      <div class="shot-grid">
+        <div class="shot">
+          <div class="shot-title">名单排序与两级触发队列</div>
+          <img src="assets/queue.png" alt="待遇人员名单按依赖项数排序，两级触发队列分列" loading="lazy">
+        </div>
+        <div class="shot">
+          <div class="shot-title">单人状态后验随月更新</div>
+          <img src="assets/posterior.png" alt="D-02状态后验曲线与本月结构化取值" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="module reveal">
+      <h3>批量结果 · 效率与成本测算</h3>
+      <p class="m-desc">直接读取测算结果表渲染，呈现三通道检出时滞、待遇漏出与分阶段部署成本。图表为仿真演示，不在页面内重算，数字口径以测算报告为准。</p>
+      <div class="shot-grid">
+        <div class="shot">
+          <div class="shot-title">三通道检出时滞对比</div>
+          <img src="assets/channels.png" alt="年度现场评估、月度对话、月度对话加雷达三通道对比" loading="lazy">
+        </div>
+        <div class="shot">
+          <div class="shot-title">待遇漏出与分阶段部署成本</div>
+          <img src="assets/leakage.png" alt="待遇漏出折线图与分阶段双通道成本柱状图" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 运行方式 -->
+<section class="block" id="run">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>原型如何运行</h2>
+      <p>原型在本地运行，约30秒启动；不配置任何接口密钥时，以离线模式完整运行，全程不联网。</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal"><div class="n">步骤 1</div><div class="t">进入可交互原型文件夹</div></div>
+      <div class="step reveal"><div class="n">步骤 2</div><div class="t">首次运行安装依赖：pip install -r requirements.txt</div></div>
+      <div class="step reveal"><div class="n">步骤 3</div><div class="t">双击启动原型.bat</div></div>
+      <div class="step reveal"><div class="n">步骤 4</div><div class="t">浏览器打开 localhost:8501</div></div>
+    </div>
+
+    <div class="modes">
+      <div class="mode reveal">
+        <h4>离线模式（默认）</h4>
+        <p>按内置演示剧本生成问答与事件，四个页面、四个案例与全部测算图表均可完整展示，断网环境下不受影响。</p>
+      </div>
+      <div class="mode reveal">
+        <h4>真模型模式（可选）</h4>
+        <p>在 config/接口配置.txt 填写接口信息，问询回读交由真实大模型完成；密钥仅保存在本地，调用失败自动回退离线模式。</p>
+      </div>
+    </div>
+
+    <div class="cases">
+      <div class="case reveal"><div class="cid">D-01 正常康复者</div><div class="cp">六项取值随月份逐月好转，后验连续更新，恢复过程被完整记录。</div></div>
+      <div class="case reveal"><div class="cid">D-02 最小一致虚报者</div><div class="cp">对话自洽但雷达连续出现申报与行为矛盾，进入二级触发现场评估。</div></div>
+      <div class="case reveal"><div class="cid">D-03 全项虚报者</div><div class="cp">复问时改口，比对器直接报出差档。</div></div>
+      <div class="case reveal"><div class="cid">D-04 重度卧床者</div><div class="cp">跌倒误报经取证排除、设备离线只进一级，等级不被误报改变。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 数据与边界 -->
+<section class="block soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>数据与边界</h2>
+    </div>
+    <div class="bgrid">
+      <div class="bitem reveal"><span class="tick">✓</span><p>状态转移与观测矩阵由 CHARLS 四波面板（2011、2013、2015、2018年）估计，其中体能测试覆盖前三波。</p></div>
+      <div class="bitem reveal"><span class="tick">✓</span><p>伪造率、矛盾事件率、覆盖率等参数均为情景假设，不作为真实发生率估计，并在报告中明确标注假设区间。</p></div>
+      <div class="bitem reveal"><span class="tick">✓</span><p>原型中的全部人物、答复与雷达事件均为演示虚构，不涉及任何真实个人。</p></div>
+      <div class="bitem reveal"><span class="tick">✓</span><p>雷达事件仅进入触发队列，不直接生成等级结论；等级变更由经办机构按现场评估程序裁定。</p></div>
+      <div class="bitem reveal"><span class="tick">✓</span><p>本原型暂不含语音输入、语音转写、电话外呼与声纹识别，这些属于下一阶段真人试点内容。</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fname">长期护理保险动态复核系统</div>
+    <p>产品原型演示 · 离线可运行 · 版本日期2026年10月</p>
+  </div>
+</footer>
+
+<div class="offline-banner">当前为离线状态，页面内容可正常浏览；如需访问在线版本，请检查网络连接。</div>
+
+<script>
+  function syncNet(){ document.body.classList.toggle('offline', navigator.onLine === false); }
+  window.addEventListener('online', syncNet);
+  window.addEventListener('offline', syncNet);
+  syncNet();
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
